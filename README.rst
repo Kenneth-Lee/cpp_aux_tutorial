@@ -18,17 +18,17 @@ C++辅助教程
    :numbered:
    :caption: C++辅助教程：
 
-   C++编程入门10.rst
-   C++编程入门11.rst
-   C++编程入门1.rst
-   C++编程入门2.rst
-   C++编程入门3.rst
-   C++编程入门4.rst
-   C++编程入门5.rst
-   C++编程入门6.rst
-   C++编程入门7.rst
-   C++编程入门8.rst
-   C++编程入门9.rst
+   01.rst
+   02.rst
+   03.rst
+   04.rst
+   05.rst
+   06.rst
+   07.rst
+   08.rst
+   09.rst
+   10.rst
+   11.rst
 
 Indices and tables
 ==================
