@@ -18,17 +18,17 @@ C++辅助教程
    :numbered:
    :caption: C++辅助教程：
 
-   01.rst
-   02.rst
-   03.rst
-   04.rst
-   05.rst
-   06.rst
-   07.rst
-   08.rst
-   09.rst
-   10.rst
-   11.rst
+   01
+   02
+   03
+   04
+   05
+   06
+   07
+   08
+   09
+   10
+   11
 
 Indices and tables
 ==================
