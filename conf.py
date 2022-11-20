@@ -55,7 +55,7 @@ source_suffix = '.rst'
 master_doc = 'README'
 
 # General information about the project.
-project = 'MySummary'
+project = 'C++入门辅助教程'
 copyright = '2022, Kenneth Lee'
 author = 'Kenneth Lee'
 

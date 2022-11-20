@@ -13,6 +13,10 @@ C++辅助教程
 有希望可以让她早早跳过一些学习陷阱，对整个问题建立一个更好的模型。这无论对于入
 门效率，还是未来扩展知识面，都有帮助。
 
+本工程设置了通过ReadTheDocs网站直接生成html格式的文档，读者可以从这里直接阅读：
+
+        `C++入门辅助教程 <https://cpp-aux-tutorial.readthedocs.io/zh_CN/latest/README.html>`_
+
 .. toctree::
    :maxdepth: 2
    :numbered:
