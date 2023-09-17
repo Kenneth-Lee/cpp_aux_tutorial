@@ -5,6 +5,8 @@
 :Date: 2022-08-30
 :Status: Draft
 
+:index:`gdb`
+
 调试
 *****
 

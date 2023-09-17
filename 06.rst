@@ -8,6 +8,8 @@
 IDE环境
 *******
 
+:index:`devc++`
+
 Dev C++
 =======
 
@@ -84,6 +86,8 @@ DevC++运行起来是这样的：
 好都用WSL（Windows Subsystem for Linux，就是我们前面讲的那种方法）。如果你以后
 熟悉这些命令了，我甚至建议不要用Windows，直接用Linux。
 
+:index:`vscode`
+
 VS Code
 =======
 
@@ -157,6 +161,8 @@ MinWG gcc安装在什么地方。你要做的是，把这些位置加入到Windo
 这样之后，重启动一下你的VS Code，试试在“命令行窗口”上运行一下gcc这个命令，如果
 它不说找不到gcc（但会说你没有输入文件），那现在VS Code能运行gcc了，你的那些插件
 应该就可以正常工作了。
+
+:index:`vi`
 
 无处不在的vi
 ============

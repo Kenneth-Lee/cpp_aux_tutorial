@@ -5,6 +5,8 @@
 :Date: 2022-09-15
 :Status: Draft
 
+:index:`bash`
+
 脚本
 *****
 
