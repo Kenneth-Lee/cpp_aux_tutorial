@@ -188,7 +188,7 @@ bash例子
 
 本章我们通过例子来学习一些脚本知识。例子的好处是它相当于切开一个问题的剖面，把
 很多知识连起来。我们可以通过这些例子了解到一些没想到的理念，没有接触过的命令，
-或者没考虑到的解决问题的方法。
+或者没考虑到的解决方案。
 
 我们用bash做例子，一方面是bash的使用很广泛，学习bash可以直接用，另一方面它兼容
 sh，而sh是POSIX标准，所以很多基本原理都是和很多其他Shell是相通的。可以认为它代
@@ -196,8 +196,7 @@ sh，而sh是POSIX标准，所以很多基本原理都是和很多其他Shell是
 念方向，它们会更接近Python这样的编程语言。这里核心的区别在于：传统的Unix Shell
 的理念是基于字符串的。而Power Shell是基于数据结构的。我认为这是两者最大的区别。
 
-我们用Python来举例，在Python中，你也可以调用命令的，比如我们在bash上运行命令ls，
-我们看到它有结果：::
+我们用Python来举例，在Python中，你也可以调用命令的，比如我们在bash上运行命令ls：::
 
     kenny@linux-desktop:~/work/cpp_aux_tutorial (main *)$ ls
     01.rst  03.rst  05.rst  07.rst  09.rst  11.rst  13.rst  15.rst  _build  conf.py      index.rst  Makefile  _templates
@@ -216,11 +215,12 @@ sh，而sh是POSIX标准，所以很多基本原理都是和很多其他Shell是
 除，数组，向量等各种算法。但如果日常使用，其实我们更愿意使用第一个，因为第一个
 敲的东西少啊。
 
-我认为这就是bash这种shell和Python这种shell的核心区别，bash几乎没有复杂的数据结
-构的，它的所有数据结构都是字符串，命令也是字符串，输入输出也是字符串，你看见什
-么就是什么，这样，你知道命令输出什么就够了，根本不用懂具体的数据结构，这样学习
-成本就很低，所以，简单的自动化工作，用这种shell就是最方便的，复杂的时候，我们
-才会用Python类的Shell来写程序。在Python这种shell里面，你一眼看过去，都不知道
+这就是区别，bash几乎没有复杂的数据结构的，它的所有数据结构都是字符串，命令也是
+字符串，输入输出也是字符串，你看见什么就是什么，这样，你知道命令输出什么就够了，
+根本不用懂具体的数据结构，这样学习成本就很低，所以，简单的自动化工作，用这种
+shell就是最方便的。复杂的时候，我们才会用Python类的Shell来写程序。
+
+在Python这种shell里面，你一眼看过去，都不知道
 os.system('ls')的输出是ls这个命令输出的，还是os.system()的返回值，你要学。bash
 没有这个问题，bash是你看见了，就是可以处理的。所以，在bash中，你要循环，就是这
 样的：::
@@ -233,11 +233,13 @@ os.system('ls')的输出是ls这个命令输出的，还是os.system()的返回�
 遇到再说），然后一行行输出“找到了xxx文件”。如果你要用Python写这样的东西，就要
 这样写：::
 
-  for i in os.popen("ls").split():
+  for i in os.popen("ls").read().split():
         print('找到了', i)
 
-后面这个你首先得懂popen（这里用system不行，因为system没有返回值），知道它可以
-返回一个ls输出的字符串，然后你还要知道字符串有split()函数可以分割空格。
+后面这个你首先得懂popen（这里用system不行，因为system没有返回值），知道read()，
+split()这些每个函数的用法以及它们的返回类型。虽然写bash脚本你也需要知道命令，
+但命令是你本来就要知道的。而且命令输出的字符串处理方法也就是那些，但函数返回的
+各种数据结构就没有那么简单了。
 
 bash的这些特点，可以从后面的例子中慢慢体会。
 
@@ -248,19 +250,19 @@ bash的这些特点，可以从后面的例子中慢慢体会。
 ImageMagick的convert命令可以完成这个工作，比如我们有一个200x200的图片叫
 full.jpg，我们要分成平均切成4份，那么命令上我们可以这样：::
 
-  convert -extract 100x100+0+0     -i full.jpg p1.jpg
-  convert -extract 100x100+100+0   -i full.jpg p2.jpg
-  convert -extract 100x100+0+100   -i full.jpg p3.jpg
-  convert -extract 100x100+100+100 -i full.jpg p4.jpg
+  convert -extract 100x100+0+0     full.jpg p1.jpg
+  convert -extract 100x100+100+0   full.jpg p2.jpg
+  convert -extract 100x100+0+100   full.jpg p3.jpg
+  convert -extract 100x100+100+100 full.jpg p4.jpg
 
 这写成脚本，直接放在一个extract.sh中，你可以这样写：::
 
   #!/bin/bash
 
-  convert -extract 100x100+0+0     -i full.jpg p1.jpg
-  convert -extract 100x100+100+0   -i full.jpg p2.jpg
-  convert -extract 100x100+0+100   -i full.jpg p3.jpg
-  convert -extract 100x100+100+100 -i full.jpg p4.jpg
+  convert -extract 100x100+0+0     full.jpg p1.jpg
+  convert -extract 100x100+100+0   full.jpg p2.jpg
+  convert -extract 100x100+0+100   full.jpg p3.jpg
+  convert -extract 100x100+100+100 full.jpg p4.jpg
 
 这是这个脚本最简单的写法，虽然用于，但至少你不用每次输错了还要改半天，改这个文
 件就行了。所以，在Unix下工作，基本上我们都用脚本，否则效率太低。其实这个工作，
@@ -273,10 +275,10 @@ full.jpg，我们要分成平均切成4份，那么命令上我们可以这样�
   CMD="convert -extract"
   SOURCE_IMG=full.jpg
 
-  $CMD 100x100+0+0     -i $SOURCE_IMG p1.jpg
-  $CMD 100x100+100+0   -i $SOURCE_IMG p2.jpg
-  $CMD 100x100+0+100   -i $SOURCE_IMG p3.jpg
-  $CMD 100x100+100+100 -i $SOURCE_IMG p4.jpg
+  $CMD 100x100+0+0     $SOURCE_IMG p1.jpg
+  $CMD 100x100+100+0   $SOURCE_IMG p2.jpg
+  $CMD 100x100+0+100   $SOURCE_IMG p3.jpg
+  $CMD 100x100+100+100 $SOURCE_IMG p4.jpg
 
 bash的变量很简单，就是xxx=yyy这样就可以了，但要注意，等号前后不能有空格。我们
 前面说过了，bash的所有处理都是字符串，你加个空格，它以为你就是要运行CMD这个命
@@ -419,6 +421,13 @@ $WIDTH，$HEIGHT这些值虽然看起来是个数字，其实是个字符串。�
   		convert -extract $SPEC $1 $2-$w-$h.jpg
   	done
   done
+
+其中：
+
+* set -e表示脚本任何一个命令运行失败了，就退出
+* 由于现在我们只写了一次convert命令，我们就不需要定义一个变量了
+* 调试的时候，其实可以先去掉convet这个命令，先看那个echo输出的参数对不对，等参
+  数正确了，才正式调用这些实际起作用的命令。
 
 现在我们把这个脚本写在文本文件中（比如叫extract.sh），chmod +x extrace.sh，然
 后运行：::
