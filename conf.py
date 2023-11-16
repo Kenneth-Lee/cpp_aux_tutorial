@@ -37,7 +37,7 @@ major, minor, patch = sphinx.version_info[:3]
 extensions = ['sphinx.ext.doctest',
     'sphinx.ext.todo',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.mathjax',
+    'sphinx.ext.imgmath',
     'chinese_space',
     'dtag',
     'cnote']
