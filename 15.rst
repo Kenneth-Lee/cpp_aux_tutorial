@@ -18,13 +18,14 @@ Ubuntu。
 的Ubuntu其实是一个虚拟机，它的内核还是Windows，只是这个内核模拟自己是个Linux,
 从而让Linux的程序可以在这上面运行。
 
-反正你马上就要学习操作系统了，我们就对这个做一个简单的介绍。操作系统是个什么东
-西呢？它是用来管理整台机器的软件。
+反正你马上就要学习操作系统了，我们就对这个做一个简单的介绍。
 
-这怎么说呢？你写一个程序helloworld.cpp，他写另一个程序，叫word.cpp，这个程序都
-要运行，都要用内存，你也要用0-100的内存，他也要用0-100的内存，那这个内存到底谁
-用？所以操作系统负责管理所有的内容，谁要用就找OS分配，所以0-100的内容分配给你
-了，就不会分配给他。这就是操作系统的功能。
+操作系统是个什么东西呢？它是用来管理整台机器的软件。
+
+这怎么说呢？你写一个程序helloworld.cpp，另一个人写另一个程序，叫word.cpp，这个
+程序都要运行，都要用内存，你也要用0-100的内存，他也要用0-100的内存，那这个内存
+到底谁用？所以操作系统负责管理所有的内容，谁要用就找OS分配，所以0-100的内容分
+配给你了，就不会分配给他。这就是操作系统的功能。
 
 现代的操作系统都是有保护能力的，给你0-100的内存，那么word就连看都不能看。这通
 过硬件的一些设置来保证的，这个在计算机组成原来里面学，我们这里先不管。我们需要
@@ -47,7 +48,7 @@ Linux的接口，其实你这个cygwin的库会转换成Windows的系统调用�
 
 一个真正的ubuntu操作系统是一个Linux操作系统。它也有自己的用户态程序，用户态库
 和Linux内核（其实Linux这个名字本来就是内核的名字，而不包括它在用户态的东西，我
-们把连用户态的完整Linux操作系统叫做GNU/Linux的）。
+们把连用户态的完整Linux操作系统叫做GNU/Linux，而不是简单叫它Linux的）。
 
 而Windows下装的Ubuntu称为WSL(Windows Subsystem for Linux），它是让Windows的内
 核模拟了一个接受Linux系统调用的接口。也就是说，你编译出来的就是一个Linux程序，
@@ -168,3 +169,87 @@ rg是Rip Grep（用apt install ripgrep安装），它也很简单，在后面简
   j tat
 
 这样就行了，反正足够能区分开其他去过的目录就行。这样在命令上切换目录就可以很快。
+
+深入一点的WSL知识
+=================
+
+这一章不是必须的，但如果你用多了，可能会关心这里的一些知识，我也放在这里作为参
+考了。
+
+到2024年，WSL有两个版本，我们前面说的主要是WSL1，其实我们现在用得比较多的是
+WSL2。这两个版本的技术是不同的，前者其实有点类似cygwin，虽然它不是直接替换
+glibc，但它最后调用内核的时候，是靠Windows的内核去响应的。而WSL2用的是虚拟机技
+术，它是真有一个Linux的内核去响应你的要求的，所有，WSL的兼容性会更好一些。
+
+两个版本都通过wsl.exe这个Windows下的命令去支持，你可以用::
+
+  wsl --set-default-version 2
+
+把默认的版本设置为2。你可以装多个发行版，这通过下面的命令完成：::
+
+  wsl --list --online        # 查看有哪些Linux发行版
+  wsl --install -d <name>    # 安装name表示的发行版
+  wsl --list --verbose       # 看你安装了哪些发行版，包括看到它用什么wsl版本运行
+  wsl --set-version <name> 2 # 设置某个发行版用什么版本的wsl运行
+
+所以，我们必须理解，在Windows上通过WSL运行Linux，其实是在两个系统上运行程序的，
+互相之间是独立的，但因为Windows把两者组合在一起了，所以很容易给你一个误会，好
+像两者是一个系统似的。
+
+下面介绍这种集成的关系：
+
+你在Windows的PowerShell或者命令行(cmd)中直接运行wsl或者bash，都是运行默认的发
+行版，所以，如果你在命令行用bash xx.sh运行脚本，这其实不是在运行一个Windows本
+地的bash，而干脆是在运行虚拟机中的wsl。这个bash.exe被放在Windows的system目录下
+面了。所以它看起来在运行一个windows的bash，但这个bash的作用是调用虚拟机，然后
+用虚拟机来运行你的bash脚本。
+
+如果你有多个发行版，你运行bash.exe，它会用默认的发行版的默认用户来运行你的脚本。
+这可以通过如下命令来设置：::
+
+  wsl --set-default         # 设置默认发行版
+  wsl --user                # 设置默认用户
+
+所以，你可以这样实现在Windows一侧运行Linux一侧的命令：::
+
+  wsl ls
+  wsl rm -Rf mydir
+  wsl find . -name "*.exe"
+
+这些命令都会用Linux一侧的命令，而使用Windows一侧的目录来运行的。
+
+反过来，在Linux中也可以运行Windows中的命令，只要带上.exe的路径就可以了。比如::
+
+  notepad.exe test.txt
+  explore.exe .
+
+这里涉及的目录都是Linux一侧的目录。实际上，默认情况下，Windows一侧都可以用这样
+的方法访问Linux一侧的路径：::
+
+  \\$wsl\\<发行版名字>\\...
+
+而Linux一侧可以用这种路径访问Windows中的路径：::
+
+  /mnt/c/...
+  /mnt/d/...
+
+一般认为，跨系统访问对方的文件会稍慢一点点，但如果不是大文件拷贝，其实是感受不
+到的。
+
+发行版默认安装在C盘，可以这样进行迁移或者复制：::
+
+  wsl --exprot debian debian.tar
+  wsl --unregister debian
+  wsl --import debian1 d:\wsl xxx.tar
+  wsl --import debian2 d:\wsl xxx.tar
+
+每个发行版的名字，会自动产生一个对应名字的.exe文件，比如debian1会生成一个
+debian1.exe，你可以用这个名字配置发行版的默认用户：::
+
+  debian1 config --default-user kenny
+
+每个发行版内部的/etc/wsl.conf目录用于配置这个发行版的默认参数，所以前面这个配
+置也可以直接修改这个文件，加入：::
+
+  [user]
+  default=kenny
